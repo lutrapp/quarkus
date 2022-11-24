@@ -1,6 +1,5 @@
 package acc.br;
 
-import java.net.URI;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -27,6 +26,7 @@ public class FrutasResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Fruta> list() {
+    	LOG.info("[FrutasResource]---lista de frutas---");
         return Fruta.listAll();
     }
     
@@ -35,23 +35,26 @@ public class FrutasResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response novaFruta(Fruta fruta) {
-        PanacheEntityBase.persist(fruta);
-        return Response.created(URI.create("/fruta/" + fruta.id)).build();
+    	LOG.info("[FrutasResource]---nova fruta---");
+    	Fruta.persist(fruta);
+        return Response.noContent().build();
     }
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
+    @Path("/{id}")
     public Response frutaPorId(@PathParam("id")Long id) {
+    	LOG.info("[FrutasResource]---fruta por Id---");
     	PanacheEntityBase frutaId = Fruta.findById(id);
     	return Response.ok(frutaId).build();
     }
     
-    
     @DELETE
     @Transactional
-    public Response apagaFruta(Long id) {
-        boolean frutaApagada = Fruta.deleteById(id);
-        return Response.ok(frutaApagada).build();
+    @Path("/{id}")
+    public Response apagaFruta(@PathParam("id")Long id) {
+    	LOG.info("[FrutasResource]---apaga fruta---");
+    	Fruta.deleteById(id);
+    	return Response.noContent().build();
     }
-
 }
