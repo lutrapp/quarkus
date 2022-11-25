@@ -25,7 +25,7 @@ public class FrutasResource {
 	
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Fruta> list() {
+    public List<Fruta> listaFrutas() {
     	LOG.info("[FrutasResource]---lista de frutas---");
         return Fruta.listAll();
     }
